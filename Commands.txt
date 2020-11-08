@@ -9,3 +9,6 @@ ng g c [NAME] --skip-tests
 ng g s [NAME] --skip-tests
 
  <form #loginForm="ngForm" class="form-inline mt-2 mt-md-0" (ngSubmit)="login()">
+
+dotnet ef migrations add ExtendedUserEntity
+dotnet ef migrations remove
