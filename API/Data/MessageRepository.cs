@@ -53,7 +53,7 @@ namespace API.Data
                     && u.RecipientDeleted == false),
                 "Outbox" => query.Where(u => u.Sender.UserName == messageParams.Username
                     && u.SenderDeleted == false),
-                _ => query.Where(u => u.Recipient.UserName == messageParams.Username && u.RecipientDeleted == false && u.DateRead == null)
+                _ => query.Where(u => u.Recipient.UserName == messageParams.Username && u.RecipientDeleted == false && u.DateRead < DateTime.Now.AddYears(-100))
             };
 
             var messages = query.ProjectTo<MessageDto>(_mapper.ConfigurationProvider);
@@ -74,14 +74,14 @@ namespace API.Data
                 .OrderBy(m => m.MessageSent)
                 .ToListAsync();
             
-            var unreadMessages = messages.Where(m => m.DateRead == null
+            var unreadMessages = messages.Where(m => m.DateRead < DateTime.Now.AddYears(-100)
                 && m.Recipient.UserName == currentUsername).ToList();
 
             if (unreadMessages.Any())
             {
                 foreach (var message in unreadMessages)
                 {
-                    message.DateRead = DateTime.Now;
+                    message.DateRead = DateTime.UtcNow;
                 }
 
                 await _context.SaveChangesAsync();

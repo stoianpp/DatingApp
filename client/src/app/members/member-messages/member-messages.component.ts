@@ -2,6 +2,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Message } from 'src/app/_models/message';
 import { NgForm } from '@angular/forms';
 import { MessageService } from 'src/app/_services/message.service';
+import { getLocaleDateTimeFormat } from '@angular/common';
 
 @Component({
   selector: 'app-member-messages',
@@ -13,6 +14,7 @@ export class MemberMessagesComponent implements OnInit {
   @Input() messages: Message[];
   @Input() username: string;
   messageContent: string;
+  minDate: string = "1900";
 
   constructor(private messageService: MessageService) { }
 
